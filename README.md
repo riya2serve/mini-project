@@ -23,9 +23,11 @@ To install and run the program locally, follow these steps:
 
 1. Clone the repository to your local computer and populate your new repo
 ```sh
-git clone [myproject-link]
-cd myproject-name
+cd myproject-name #open repo directory
+git clone [https://github.com/YOUR-USERNAME/YOUR-REPOSITORY] #clone my github repo
 ```
+After you do that you'' want to create a README file and some text to it to describe [...]
+
 2. Install the required dependencies. If using **Conda**, you can install the required dependencies with:
 ```
 conda install [list dependencies here...] -c conda-forge

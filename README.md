@@ -49,7 +49,7 @@ python __main__.py --parent1 parent1.vcf --parent2 parent2.vcf -- output simulat
 usage: python __main__.py [-h] --parent1 PARENT1 --parent2 PARENT2 --output OUTPUT [--snp-count SNP_COUNT] [--chrom-length CHROM_LENGTH] [--distortion]
 
 optional arguments:
- -h, --help				show this help message and exit 
+ -h, --help		show this help message and exit 
  --parent1 PARENT1 		path to first parental genome file (FASTA/VCF)
  --parent2 PARENT2 		path to second parental genome file (FASTA/VCF)
  --output OUTPUT 		path to the simulated F1 chromosome VCF file

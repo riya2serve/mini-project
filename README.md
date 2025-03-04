@@ -23,8 +23,8 @@ To install and run the program locally, follow these steps:
 
 1. Clone the repository to your local computer and populate your new repo
 ```sh
-	git clone [myproject-link]
-	cd myproject-name
+git clone [myproject-link]
+cd myproject-name
 ```
 2. Install the required dependencies. If using **Conda**, you can install the required dependencies with:
 ```
@@ -32,7 +32,7 @@ conda install [list dependencies here...] -c conda-forge
 ```
 Alternatively, you can install via 'pip':
 ```
-	pip install -e .
+pip install -e .
 ```
 4. Once installed, execute the program using
 ```
@@ -49,13 +49,13 @@ python __main__.py --parent1 parent1.vcf --parent2 parent2.vcf -- output simulat
 usage: python __main__.py [-h] --parent1 PARENT1 --parent2 PARENT2 --output OUTPUT [--snp-count SNP_COUNT] [--chrom-length CHROM_LENGTH] [--distortion]
 
 optional arguments:
- -h, --help			show this help message and exit 
- --parent1 PARENT1 	path to first parental genome file (FASTA/VCF)
- --parent2 PARENT2 	path to second parental genome file (FASTA/VCF)
- --output OUTPUT 	path to the simulated F1 chromosome VCF file
- --snp-count SNP_COUNT        number of SNPs to simulate per chromosome (default: 1000)
+ -h, --help				show this help message and exit 
+ --parent1 PARENT1 		path to first parental genome file (FASTA/VCF)
+ --parent2 PARENT2 		path to second parental genome file (FASTA/VCF)
+ --output OUTPUT 		path to the simulated F1 chromosome VCF file
+ --snp-count SNP_COUNT  number of SNPs to simulate per chromosome (default: 1000)
  --chrom-length CHROM_LENGTH  chromosome length in base pairs (default: 1Mb)
- --distortion 		apply segregation distortion 
+ --distortion 			apply segregation distortion 
 ```
 
 These arguments will allow you to:
@@ -73,7 +73,7 @@ After running the program, the output of the VCF file should look something like
 ##contig =<ID=1, length = 1000000>
 
 #CHROM 		POS 	ID 		REF 	ALT 	QUAL 	FILTER 	INFO
-1 			1023    .       A       G       .       .       DP = 13 #depth of coverage
-1 			2071    .       C       T       .       .       DP = 28
-1 			3200    .       C       T       .       .       DP = 22
+1 		1023    .       A       G       .       .       DP = 13 #depth of coverage
+1 		2071    .       C       T       .       .       DP = 28
+1 		3200    .       C       T       .       .       DP = 22
 ```

@@ -73,7 +73,7 @@ After running the program, the output of the VCF file should look something like
 ##contig =<ID=1, length = 1000000>
 
 #CHROM 		POS 	ID 		REF 	ALT 	QUAL 	FILTER 	INFO
-1 		1023    .       A       G       .       .       DP = 13 #depth of coverage
-1 		2071    .       C       T       .       .       DP = 28
-1 		3200    .       C       T       .       .       DP = 22
+1 		1023    .       	A       G       .       .       DP = 13 #depth of coverage
+1 		2071    .      		C       T       .       .       DP = 28
+1 		3200    .       	C       T       .       .       DP = 22
 ```

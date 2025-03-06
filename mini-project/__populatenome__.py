@@ -24,7 +24,7 @@ def fetch_nomes(accession_ids, output_folder = ""):
             with open(output_fasta, "w") as file:
                 file.write(handle.read())
 
-            handle.close()
+            genome.close()
             print(f"Genome {accession_id} saved as {output_fasta}")
 
         except Exception as e:

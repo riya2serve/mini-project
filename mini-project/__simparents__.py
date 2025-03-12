@@ -110,7 +110,9 @@ After running this script and generating the parental VCF files, you can
 inspect and verify them directly from your terminal. 
 
 Note: GitHubs file size limit is 100.00Mb. You might have to use git LFS (large file storage), a git extension
-for working with large files. Git LFS replaces large files with lightweight references that will be stored in your
+for working with large files. 
+
+Git LFS replaces large files with lightweight references that will be stored in your
 Github repository. The actual data then gets stored on a separate server.
 
 1. View the first few lines of Parent1 VCF:

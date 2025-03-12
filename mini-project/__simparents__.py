@@ -28,8 +28,8 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
     """
     Simulate random SNPs in a genome FASTA and save as a VCF.
     """
-    sequences = list(SeqIO.parse(fasta_file, "fasta"))
-    tot_nome_length = sum(len(seq) for seq in sequences)
+    sequences = list(SeqIO.parse(fasta_file, "fasta")) #can contain contigs or chromosomes
+    tot_nome_length = sum(len(seq) for seq in sequences) #add up the contig or chromosome length so you can know full range for 'placing' SNPs
 
     print(f"[INFO] Loaded genome: {tot_nome_length:,} bp across {len(sequences)} chromosomes")
 
@@ -38,17 +38,18 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
     snp_positions.sort()
 
     # Store SNPs per chromosome
-    snps_on_chrom = {}
-    genome_cursor = 0
+    snps_on_chrom = {} #this is a dictionary for storing the SNPs on each chromsome
+    genome_cursor = 0 #position on genome; initializing at zero
 
-    for seq in sequences:
-        chrom = seq.id
+    for seq in sequences: #this for loop iterates through each chromosome
+        chrom = seq.id #name of the chromosome
         chrom_length = len(seq)
-        chrom_snps = []
+        chrom_snps = [] #an empty list to store the SNPs found on a chromsome
 
+        #will keep looping as long as these conditions are true:
         while snp_positions and genome_cursor < snp_positions[0] <= genome_cursor + chrom_length:
-            pos_in_chrom = snp_positions.pop(0) - genome_cursor
-            ref_base = seq.seq[pos_in_chrom - 1].upper()
+            pos_in_chrom = snp_positions.pop(0) - genome_cursor #converting genome wide SNPs into chrom-relative position
+            ref_base = seq.seq[pos_in_chrom - 1].upper() #gets the reference nucleotide and converts it to uppercase
 
             if ref_base not in "ACGT":
                 continue  # Skip ambiguous bases
@@ -93,4 +94,4 @@ if __name__ == "__main__":
         output_vcf=os.path.join(output_folder, "parent2.vcf")
     )
 
-    print("[COMPLETE] Parent VCF simulation finished!")
+    print("[COMPLETE] Parental VCF simulation finished!")

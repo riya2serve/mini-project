@@ -61,7 +61,11 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
         genome_cursor += chrom_length
 
         if chrom_snps:
-            snps_on_chrom[chrom] = chrom_snps
+            snps_on_chrom[chrom] = chrom_snps #storing SNPS for each chromosome
+            ###{
+               ##"NC_079487.1": [(pos1, ref, alt), (pos2, ref, alt)],
+               ##"NC_079488.1": [(pos3, ref, alt), ...]
+            ###}
 
     # Write VCF file
     with open(output_vcf, "w") as vcf:

@@ -83,7 +83,7 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
 # FUNC. EXECUTION
 # ================
 if __name__ == "__main__":
-    num_snps = 20000
+    num_snps = 10000
 
     # Simulate SNPs for Parent1
     simulate_snps(

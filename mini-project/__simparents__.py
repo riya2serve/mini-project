@@ -100,3 +100,31 @@ if __name__ == "__main__":
     )
 
     print("[COMPLETE] Parental VCF simulation finished!")
+
+"""
+===========================================================
+CHECK OUTPUT IN TERMINAL (POST-RUN)
+===========================================================
+
+After running this script and generating the parental VCF files, you can 
+inspect and verify them directly from your terminal:
+
+1. View the first few lines of Parent1 VCF:
+-------------------------------------------------
+$ head spinach_genome/parent1.vcf #prints the top 10 lines 
+
+2. Scroll through the file interactively:
+-------------------------------------------------
+$ less spinach_genome/parent1.vcf #prints >10 lines
+(press 'q' to quit out of `less`)
+
+3. Count the number of simulated SNPs (excluding headers):
+-------------------------------------------------
+$ grep -v "^#" spinach_genome/parent1.vcf | wc -l
+
+4. Search for variants on a specific chromosome (example):
+-------------------------------------------------
+$ grep "NC_079487.1" spinach_genome/parent1.vcf
+
+===========================================================
+"""

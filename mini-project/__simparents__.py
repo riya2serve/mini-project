@@ -52,11 +52,11 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
             ref_base = seq.seq[pos_in_chrom - 1].upper() #gets the reference nucleotide and converts it to uppercase
 
             if ref_base not in "ACGT":
-                continue  # Skip ambiguous bases
+                continue  # Skip ambiguous/unknown bases
 
             # Generate a random alternative allele
             alt_base = random.choice([b for b in "ACGT" if b != ref_base])
-            chrom_snps.append((pos_in_chrom, ref_base, alt_base))
+            chrom_snps.append((pos_in_chrom, ref_base, alt_base)) #add a tuple describing the SNP
 
         genome_cursor += chrom_length
 

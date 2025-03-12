@@ -63,10 +63,4 @@ if __name__ == "__main__":
 
     print("[COMPLETE] Finished downloading all chromosomes.")
 
-
-
-
-
-
-
 #second genome is an 

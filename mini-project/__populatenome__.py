@@ -10,7 +10,7 @@ import pandas as pd #for dataframe handling (not necessary)
 Entrez.email = "rr3491@columbia.edu"
 
 #Step 1. make an output directory to store FASTA files
-output_folder = "spinach_genome/"
+output_folder = "spinach_genome"
 os.makedirs(output_folder, exist_ok = True)
 
 #Step 2. list the RefSeq chromosome accession IDs (on NCBI)
@@ -29,7 +29,7 @@ accession_ids = [
 #================
 
 #let's create a function to fetch genome sequences from NCBI
-def fetch_fasta(accession_id, output_folder = "spinach_genome/"):
+def fetch_fasta(accession_ids, output_folder):
     """
     This function will fetch a FASTA file from NCBI using their accession IDs.
     Each FASTA will be saved locally (default: current user director)
@@ -49,10 +49,10 @@ def fetch_fasta(accession_id, output_folder = "spinach_genome/"):
         with open(output_path, "w") as fasta_file:
             fasta_file.write(fasta_data)
 
-        print(f"[SUCCESS] Saved {accession_id} to {output_path}")
+        print(f"[SUCCESS] Saved {accession_ids} to {output_path}")
 
     except Exception as e:
-        print(f"[ERROR] Failed to fetch {accession_id}: {e}")
+        print(f"[ERROR] Failed to fetch {accession_ids}: {e}")
 
 # ==============
 # FETCH CHROMS

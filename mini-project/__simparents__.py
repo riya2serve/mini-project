@@ -107,13 +107,12 @@ CHECK OUTPUT IN TERMINAL (POST-RUN)
 ===========================================================
 
 After running this script and generating the parental VCF files, you can 
-inspect and verify them directly from your terminal. 
+inspect and verify them directly from your terminal. Note: GitHubs file size limit is 100.00Mb. 
 
-Note: GitHubs file size limit is 100.00Mb. You might have to use git LFS (large file storage), a git extension
-for working with large files. 
-
-Git LFS replaces large files with lightweight references that will be stored in your
-Github repository. The actual data then gets stored on a separate server.
+If your FASTA file size >100mb you will need either Git LFS, a git extension
+for working with large files, or .gitignore, a text file that tells Git to ignore 
+certain files or directories. Both are useful for preventing temporary files, large files, or 
+sensitive data from being added to your repo. They keep your Git history lightweight!
 
 1. View the first few lines of Parent1 VCF:
 -------------------------------------------------

@@ -86,10 +86,43 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
     print(f"[DONE] Simulated SNPs written to {output_vcf}")
 
 # ================
+# ARGPARSE
+# ================
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Simulate parental variants by generating SNPs from a ref FASTA genome.")
+
+    # Required args
+    parser.add_argument('--input-fasta', type=str, required=True,
+                        help='Path to the reference FASTA genome file')
+    parser.add_argument('--parent1', type=str, required=True,
+                        help='Output VCF path for Parent 1')
+    parser.add_argument('--parent2', type=str, required=True,
+                        help='Output VCF path for Parent 2')
+
+    # Optional args
+    parser.add_argument('--snp-count', type=int, default=1000,
+                        help='Number of SNPs per parent (default: 1000)')
+
+    return parser.parse_args()
+
+# ================
 # FUNC. EXECUTION
 # ================
 if __name__ == "__main__":
-    num_snps = 1000
+    
+    args = parse_args()
+
+    # Check input FASTA file exists
+    if not os.path.isfile(args.input_fasta):
+        print(f"[ERROR] Input FASTA file not found: {args.input_fasta}")
+        exit(1)
+    # Create output folder if necessary (based on Parent1 VCF path)
+    output_folder = os.path.dirname(args.parent1)
+    os.makedirs(output_folder, exist_ok=True)
+
+    print("[INFO] Starting parental genome simulation...")
 
     # Simulate SNPs for Parent1
     simulate_snps(

@@ -75,7 +75,7 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
 
         for chrom, snps in snps_on_chrom.items():
             for pos, ref, alt in snps:
-                vcf.write(f"{chrom}\t{pos}\t.\t{ref}\t{alt}\t.\tPASS\t.\tGT\t1/1\n")
+                vcf.write(f"{chrom}\t{pos}\t.\t{ref}\t{alt}\t.\tPASS\t.\tGT\t0/1\n") #heterozygous parents
 
     print(f"[DONE] Simulated SNPs written to {output_vcf}")
 

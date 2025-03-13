@@ -111,8 +111,10 @@ def sim_f1(parent1_variants, parent2_variants):
 
         #build F1 genotype
         f1_alleles = sorted([allele_from_p1, allele_from_p2])
-
         genotype = f"{f1_alleles[0]}/{f1_alleles[1]}"
+
+        if genotype == "0/0": #if F1 genotype is 0/0 skip variant completely
+            continue
 
         # Create the F1 variant record
         variant = {

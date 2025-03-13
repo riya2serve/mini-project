@@ -123,6 +123,7 @@ sensitive data from being added to your repo. They keep your Git history lightwe
 1. View the first few lines of Parent1 VCF:
 -------------------------------------------------
 $ head spinach_genome/parent1.vcf #prints the top 10 lines 
+GT = genotypes
 
 2. Scroll through the file interactively:
 -------------------------------------------------

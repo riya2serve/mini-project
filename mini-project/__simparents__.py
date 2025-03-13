@@ -3,9 +3,9 @@ import os
 import random #for random number gneration (will use for SNP positions)
 import pandas as pd #for dataframe handling (not necessary)
 
-#================
-#CONFIGURATION
-#================
+# ================
+# CONFIGURATION
+# ================
 
 """
 This script will allow users to simulate two parental genomes from reference FASTA files.
@@ -20,9 +20,9 @@ genome_fasta = "spinach_genome/spinach_wg.fasta"
 output_folder = "spinach_genome"
 os.makedirs(output_folder, exist_ok = True) #checks that output folder exists
 
-#================
-#FUNCTION(s)
-#================
+# ================
+# FUNCTION(s)
+# ================
 
 def simulate_snps(fasta_file, snp_count, output_vcf):
     """

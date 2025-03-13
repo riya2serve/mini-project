@@ -2,6 +2,7 @@ from Bio import Entrez, SeqIO #BioPython for NCBI access and FASTA parsing
 import os 
 import random #for random number gneration (will use for SNP positions)
 import pandas as pd #for dataframe handling (not necessary)
+import argparse
 
 # ================
 # CONFIGURATION

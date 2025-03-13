@@ -2,11 +2,12 @@ import os
 import random #for random number gneration (will use for SNP positions)
 
 """
-This script will load my parent1 and parent2 VCF files, and use them to simulate an F1 hybrid
-by (re)combining alleles from the parental genomes.
+This script will load two parent VCF files and use them to simulate an F1 hybrid
+by (re)combining alleles from the parental genomes. The output is an F1 hybrid VCF file that includes 
+REF, ALT, and GT fields. 
 
-The output file will be a VCF file containing the F1 genome. The parent VCF files should have 
-REF, ALT, and GT fields. If they do not, you will want to go back and add those.
+Note: Parent VCF files should include REF, ALT, and GT fields. If they do not, you will want to go back 
+and add them first.
 
 """
 
@@ -25,33 +26,46 @@ f1vcf_output = "spinach_genome/f1hybrid.vcf"
 
 def get_alleles(gt):
     """
-    Converts a genotype string like "0/1" or "1/1" into a list of allele indices: [0, 1] or [1, 1].
+    Converts a genotype string (GT) into a list of allele indices.
+    Arguments: 
+        gt (string): genotype string
+    Return:
+        list: alleles expressed as integers
+        "0/1" -> [0, 1]
+        "./." -> [0] (cases where reference allele is missing)
+
     """
     if gt == "./.":
-        return [0]  # assume reference if missing
+        return [0]  # assume reference allele, if the genotype is missing
     alleles = gt.replace('|', '/').split('/')
     return [int(allele) for allele in alleles]
 
 def parse_vcf(file_path):
     """
-    Parse an existing VCF file into a list of variants.
-    Each variant is a dictionary with CHROM, POS, REF, ALT, GENOTYPE.
+    Parses an existing VCF file and extracts relevant information.
+    Arguments:
+        file_path (string): path to the parent VCF file
+    Return:
+        list: a list of dictionaries representing each variant.  
     """
-    variants = [] #empty list
+    variants = [] #empty list to hold variant dictionaries; final will be list of dictionaries
 
     with open(file_path, 'r') as file:
         for line in file:
             if line.startswith('#'):
                 continue  #skipping headers
 
+            #splits VCF lines by tab
             parts = line.strip().split('\t')
 
-            chrom = parts[0]
-            pos = parts[1]
-            ref = parts[3]
-            alt = parts[4]
+            #extracting specific VCF fields
+            chrom = parts[0] #chromosome
+            pos = parts[1] #position on chromosome
+            ref = parts[3] #reference allele
+            alt = parts[4] #alternate allele (s) -> polymorphic!
             genotype = parts[9] if len(parts) > 9 else "./."
 
+            #formatting information that will be stored
             variant = {
                 "CHROM": chrom,
                 "POS": pos,
@@ -60,65 +74,70 @@ def parse_vcf(file_path):
                 "GT": genotype
             }
 
-            variants.append(variant) #add variant to the list
+            variants.append(variant) #adding to the list of variants
 
     return variants #returns all variants
 
 def sim_f1(parent1_variants, parent2_variants):
     """
-    Combine two lists of parent variants to generate F1 hybrid variants.
+    Simulates F1 hybrid by combining parental variants
+    Arguments:
+        parent1_variants (list): variants from parent 1
+        parent2_variants (list): variants from parent 2
+    Return:
+        list: simulated list of F1 variants
     """
-    #create a lookup table for each parent
-      # Create lookup dictionaries
+    #creating dictionaries that can be looked up (CHROM,POS): variant
     parent1_lookup = {(v["CHROM"], v["POS"]): v for v in parent1_variants}
     parent2_lookup = {(v["CHROM"], v["POS"]): v for v in parent2_variants}
 
-    # Union of all positions
+    #gathering all unique variant positions
     all_positions = set(parent1_lookup.keys()).union(set(parent2_lookup.keys()))
 
-    f1_variants = []
+    f1_variants = [] #empty list that will hold all the f1 variants
 
-    for chrom, pos in sorted(all_positions):
-        # Get parent records or default REF
+    for chrom, pos in sorted(all_positions): #for-loop to iterate through variant positions
+        #getting reference (REF) allele from both parents
         var1 = parent1_lookup.get((chrom, pos), None)
         var2 = parent2_lookup.get((chrom, pos), None)
 
         # Get REF allele from either parent
         ref = var1["REF"] if var1 else var2["REF"]
 
-        # Combine ALT alleles (if any)
+        #gathering all ALT alleles from parents
         alt_list = []
         if var1 and var1["ALT"] != ".":
             alt_list.extend(var1["ALT"].split(","))
         if var2 and var2["ALT"] != ".":
             alt_list.extend(var2["ALT"].split(","))
 
-        # Remove duplicates and sort
+        #removing duplicates and sorting ALT alleles
         alts = sorted(set(alt_list))
 
-        #if no ALT alleles, skip this site
+        #if there are no ALT alleles, skip this site
         if not alts:
             continue
 
+        #combines all ALT alleles into a comma-separated string!!!
         alt_field = ",".join(alts)
 
-        # Parent genotypes
+        #getting parent genotypes; if reference is missing use 0/0
         gt1 = var1["GT"] if var1 else "0/0"
         gt2 = var2["GT"] if var2 else "0/0"
 
-        # Get alleles from parents
+        #get list of alleles from each parent
         alleles_p1 = get_alleles(gt1)
         alleles_p2 = get_alleles(gt2)
 
         # Randomly inherit one allele from each parent
         allele_from_p1 = random.choice(alleles_p1)
         allele_from_p2 = random.choice(alleles_p2)
-
-        # Sort alleles for genotype string
+        
         f1_alleles = sorted([allele_from_p1, allele_from_p2])
+        
+        #convert alleles into genotype strings for VCF format!!!
         genotype = f"{f1_alleles[0]}/{f1_alleles[1]}"
 
-        # ✅ Skip homozygous reference genotypes (0/0)
         if genotype == "0/0":
             continue
 

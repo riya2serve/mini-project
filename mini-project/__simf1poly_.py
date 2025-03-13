@@ -22,6 +22,16 @@ f1vcf_output = "spinach_genome/f1hybrid.vcf"
 # ============
 # FUNCTION(s)
 # ============
+
+def get_alleles(gt):
+    """
+    Converts a genotype string like "0/1" or "1/1" into a list of allele indices: [0, 1] or [1, 1].
+    """
+    if gt == "./.":
+        return [0]  # assume reference if missing
+    alleles = gt.replace('|', '/').split('/')
+    return [int(allele) for allele in alleles]
+
 def parse_vcf(file_path):
     """
     Parse an existing VCF file into a list of variants.
@@ -97,8 +107,8 @@ def sim_f1(parent1_variants, parent2_variants):
         gt2 = var2["GT"] if var2 else "0/0"
 
         # Get alleles from parents
-        alleles_p1 = get_alleles_from_genotype(gt1)
-        alleles_p2 = get_alleles_from_genotype(gt2)
+        alleles_p1 = get_alleles(gt1)
+        alleles_p2 = get_alleles(gt2)
 
         # Randomly inherit one allele from each parent
         allele_from_p1 = random.choice(alleles_p1)

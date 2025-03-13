@@ -87,7 +87,7 @@ def sim_f1(parent1_variants, parent2_variants):
         alts = sorted(set(alt_list))
 
         #if no ALT alleles, skip this site
-        if no alts:
+        if not alts:
             continue
 
         alt_field = ",".join(alts)

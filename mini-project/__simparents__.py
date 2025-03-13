@@ -71,11 +71,17 @@ def simulate_snps(fasta_file, snp_count, output_vcf):
     with open(output_vcf, "w") as vcf:
         vcf.write("##fileformat=VCFv4.2\n")
         vcf.write(f"##source=Simulated_Parent\n")
-        vcf.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tPARENT\n")
+        vcf.write("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tPARENT1\tPARENT2\n")
 
+    #want to make parents polymorphic 
+        genotypes = [("0/0", "1/1"), ("1/1", "0/0"), ("0/1", "0/1")]  #genotype options
+        #both homozygous OR both heterozygous
+        
         for chrom, snps in snps_on_chrom.items():
             for pos, ref, alt in snps:
-                vcf.write(f"{chrom}\t{pos}\t.\t{ref}\t{alt}\t.\tPASS\t.\tGT\t0/1\n") #heterozygous parents
+                gt_parent1, gt_parent2 = random.choice(genotypes)
+
+                vcf.write(f"{chrom}\t{pos}\t.\t{ref}\t{alt}\t.\tPASS\t.\tGT\t{gt_parent1}\t{gt_parent2}\n") #heterozygous parents
 
     print(f"[DONE] Simulated SNPs written to {output_vcf}")
 

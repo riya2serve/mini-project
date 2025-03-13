@@ -27,7 +27,7 @@ def parse_vcf(file_path):
     Parse an existing VCF file into a list of variants.
     Each variant is a dictionary with CHROM, POS, REF, ALT, GENOTYPE.
     """
-    variants = [] empty list
+    variants = [] #empty list
 
     with open(file_path, 'r') as file:
         for line in file:

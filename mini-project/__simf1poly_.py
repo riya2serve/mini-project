@@ -59,69 +59,65 @@ def sim_f1(parent1_variants, parent2_variants):
     Combine two lists of parent variants to generate F1 hybrid variants.
     """
     #create a lookup table for each parent
-    parent1_lookup = {}
-    for var in parent1_variants:
-        key = (var["CHROM"], var["POS"]) #look up a variant at a certain chromosome position
-        parent1_lookup[key] = var
+      # Create lookup dictionaries
+    parent1_lookup = {(v["CHROM"], v["POS"]): v for v in parent1_variants}
+    parent2_lookup = {(v["CHROM"], v["POS"]): v for v in parent2_variants}
 
-    parent2_lookup = {}
-    for var in parent2_variants:
-        key = (var["CHROM"], var["POS"])
-        parent2_lookup[key] = var
-
-    #gather unique variant positions (union of both parents)
+    # Union of all positions
     all_positions = set(parent1_lookup.keys()).union(set(parent2_lookup.keys()))
 
-    f1_variants = [] #empty list
+    f1_variants = []
 
-    for key in sorted(all_positions):
-        chrom, pos = key
+    for chrom, pos in sorted(all_positions):
+        # Get parent records or default REF
+        var1 = parent1_lookup.get((chrom, pos), None)
+        var2 = parent2_lookup.get((chrom, pos), None)
 
-        #get parent variants
-        var1 = parent1_lookup.get(key, None)
-        var2 = parent2_lookup.get(key, None)
-
+        # Get REF allele from either parent
         ref = var1["REF"] if var1 else var2["REF"]
-        alt1 = var1["ALT"] if var1 else ""
-        alt2 = var2["ALT"] if var2 else ""
 
-        # Build list of ALTs for F1
-        alts = [] #empty list
-        if alt1 != "":
-            alts.extend(alt1.split(","))
-        if alt2 != "":
-            alts.extend(alt2.split(","))
+        # Combine ALT alleles (if any)
+        alt_list = []
+        if var1 and var1["ALT"] != ".":
+            alt_list.extend(var1["ALT"].split(","))
+        if var2 and var2["ALT"] != ".":
+            alt_list.extend(var2["ALT"].split(","))
 
-        alts = list(sorted(set(alts)))  #remove any duplicate variants
+        # Remove duplicates and sort
+        alts = sorted(set(alt_list))
 
-        if not alts:
-            continue  #skip if there are no variants
+        #if no ALT alleles, skip this site
+        if no alts:
+            continue
 
-        #get genotypes from parents; assume 0/0
+        alt_field = ",".join(alts)
+
+        # Parent genotypes
         gt1 = var1["GT"] if var1 else "0/0"
         gt2 = var2["GT"] if var2 else "0/0"
 
-        #convert genotype strings like "0/1" to allele lists
-        alleles1 = gt1.replace('|', '/').split('/')
-        alleles2 = gt2.replace('|', '/').split('/')
+        # Get alleles from parents
+        alleles_p1 = get_alleles_from_genotype(gt1)
+        alleles_p2 = get_alleles_from_genotype(gt2)
 
-        #random pick one allele from each parent
-        allele_from_p1 = random.choice(alleles1)
-        allele_from_p2 = random.choice(alleles2)
+        # Randomly inherit one allele from each parent
+        allele_from_p1 = random.choice(alleles_p1)
+        allele_from_p2 = random.choice(alleles_p2)
 
-        #build F1 genotype
+        # Sort alleles for genotype string
         f1_alleles = sorted([allele_from_p1, allele_from_p2])
         genotype = f"{f1_alleles[0]}/{f1_alleles[1]}"
 
-        if genotype == "0/0": #if F1 genotype is 0/0 skip variant completely
+        # ✅ Skip homozygous reference genotypes (0/0)
+        if genotype == "0/0":
             continue
 
-        # Create the F1 variant record
+        # Create the variant record to be written
         variant = {
             "CHROM": chrom,
             "POS": pos,
             "REF": ref,
-            "ALT": ",".join(alts),
+            "ALT": alt_field,
             "GT": genotype
         }
 

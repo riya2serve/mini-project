@@ -112,7 +112,7 @@ def parse_args():
 # FUNC. EXECUTION
 # ================
 if __name__ == "__main__":
-    
+    num_snps = 1000
     args = parse_args()
 
     # Check input FASTA file exists

@@ -131,7 +131,7 @@ def write_vcf(variants, output_file):
     """
     Write list of F1 variants to a VCF file
     """
-    with open(output_file, 'w') as vcf:
+    with open(f1vcf_output, 'w') as vcf:
         # Write VCF header
         vcf.write("##fileformat=VCFv4.2\n")
         vcf.write("##source=F1_hybrid_simple_simulation\n")
@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
     # Step 3: Simulate the F1 hybrid
     print("[INFO] Simulating F1 hybrid...")
-    f1_variants = simulate_f1(parent1_variants, parent2_variants)
+    f1_variants = sim_f1(parent1_variants, parent2_variants)
 
     # Step 4: Write the F1 hybrid VCF file
     write_vcf(f1_variants, f1vcf_output)

@@ -1,5 +1,6 @@
 import os 
 import random #for random number gneration (will use for SNP positions)
+import argparse
 
 """
 This script will load two parent VCF files and use them to simulate an F1 hybrid
